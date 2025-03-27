@@ -871,6 +871,9 @@ def check_exists_thirdparty_get_natter_from_github():
     save_path = './venv/Thirdparty/'
     need_file = ['natter.py', 'natter-check.py']
     # initfile = '__init__.py'
+    def check_and_create_directory():
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
     def download_zipfile():
         response = requests.get("https://api.github.com/repos/MikeWang000000/Natter/releases")
         if response.status_code == 200:
@@ -895,6 +898,9 @@ def check_exists_thirdparty_get_natter_from_github():
                         target = open(os.path.join(save_path, filename), "wb")
                         with source, target:
                             shutil.copyfileobj(source, target)
+
+    check_and_create_directory()
+    #确保savepath目录存在
     download_zipfile()
     #从github下载natter.zip
     if os.path.exists(zip_path):
