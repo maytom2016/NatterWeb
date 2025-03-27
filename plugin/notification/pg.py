@@ -50,10 +50,10 @@ class operation_type(str,Enum):
 
 class EmailPayload(BaseModel):
     operation_type: operation_type
-    email_type: str
-    sender_email:EmailStr
-    authorization_code:str
-    recipient_email:EmailStr
+    email_type: str="qq"
+    sender_email:EmailStr = "sender@qq.com"
+    authorization_code:str="default_code"
+    recipient_email:EmailStr="recipient@example.com"
     smtp_enabled:bool
 
 # 防止因为线程不结束而导致结束时卡住
@@ -223,10 +223,15 @@ def sendmail_html(payload:EmailPayload,title,body):
 def load_from_json(filename):
     # 检查文件是否存在
     if not os.path.exists(filename):
-        raise FileNotFoundError(f"The file {filename} does not exist.")
+        # raise FileNotFoundError(f"The file {filename} does not exist.")
+        payload=EmailPayload(operation_type=operation_type.save,smtp_enabled=False)
+        ret=payload.model_dump()
+        return ret
     # 文件存在，继续读取和加载
     with open(filename, 'r') as file:
-        return json.load(file)
+        a=json.load(file)
+        print("a的类型"+str(type(a)))
+        return a
 async def save_to_json_async(data, filename):
     async with aiofiles.open(filename, 'w') as file:
         await file.write(data)
