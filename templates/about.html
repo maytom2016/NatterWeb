@@ -1,0 +1,20 @@
+{% macro css_script() %}
+<link rel="stylesheet" href="/static/about.css">
+{% endmacro %}
+{% macro about_layout() %}
+    <div class="about-layout">
+         <p class="about">Natter-Web:{{ main_dict.version }}</p>
+         <p class="about">作者:maytom2016</p>
+         <p class="about">项目地址：github.com/maytom2016/natter-web</p>
+    </div>
+{% endmacro %}
+
+{% extends "base.html" %}
+
+{% block content %}
+     {{ about_layout() }}
+{% endblock %}
+
+{% block bodytail %}
+    {{ css_script() }}
+{% endblock %}
