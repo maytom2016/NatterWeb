@@ -1,0 +1,241 @@
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 12rem;
+            height: 100%;
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            overflow: auto;
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+        /*导航标题*/
+        .sidebar .Levels{
+            display: flex;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            justify-content: center;
+            align-items: center;
+        }
+        .sidebar.collapsed {
+            width: 4rem;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            top:10px;
+            padding: 5px 20px;
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: padding 0.3s ease;
+            z-index: auto;
+            position: relative;
+        }
+        .sidebar a p{
+            display: block;
+            margin: 5px 20px;
+        }
+        .sidebar.collapsed a p {
+            display: none;
+        }
+        .sidebar a:hover {
+            background: #444;
+        }
+
+        .toggle-btn span {
+            display: block;
+            width: 30px;
+            height: 5px;
+            background: #fff;
+            margin: 5px 0;
+        }
+
+        .toggle-btn {
+        justify-self: center;
+        align-self: center;
+        margin-left: 50px;
+ /*        top: 30px;
+            right: 10px;
+            height: 100%;
+            width: 100%;
+        */
+        cursor: pointer;
+           transition: right 0.3s ease;
+        }
+.sidebar.collapsed .toggle-btn {
+    right: 15px;
+    margin-left: 0px;
+    z-index: 101;
+
+}
+.sidebar.collapsed .levelshead {
+    display: none
+}
+.ant-layout {
+    display: flex;
+    flex-direction: column; /* 在小屏设备上垂直排列子元素 */
+    align-items: stretch;   /* 子元素在垂直方向上拉伸以填充容器 */
+    justify-content: space-between; /* 在主轴上均匀分布子元素 */
+    width: 100vw;
+    height: 100vh;
+}
+
+/* 媒体查询，针对小于768px的屏幕 */
+@media (max-width: 767px) {
+    .ant-layout {
+        flex-direction: column; /* 对于小屏幕，使子元素垂直堆叠 */
+        align-items: center;    /* 水平居中子元素 */
+    }
+    .right-layout {
+        margin-left: 5%;
+        padding: 1px;
+        flex-direction: column; /* 对于小屏幕，使子元素垂直堆叠 */
+        height: 100vh ; /* 保持高度适时调整 */
+        /* 确保在小屏幕上有滚动条而不是溢出 */
+        width:calc(100vh - 350px);
+        /* 可能需要根据实际内容调整 */
+    }
+    .data-summary {
+        flex-direction: column;
+        margin:15px 80px;
+        gap: 10px; /* 减小子元素间的间距 */
+        width: calc(100% - 20px); /* 减少宽度以适应更小的边距 */
+        padding:8px;
+    }
+    .summary-item {
+        /* 在小屏幕设备上，每个元素占有100%宽度 */
+        flex-basis: 50%;
+        height: auto; /* 允许高度根据内容自动调整 */
+    }
+    .connection-list {
+        /* 减小边距以便在小屏幕上更紧凑 */
+        margin: 10px;
+        overflow: auto;
+        /* 如果需要，可以进一步调整宽度 */
+        width: calc(100% - 50px); /* 减少边距的影响 */
+    }
+}
+
+.right-layout {
+    background-color: #f0f0f0;
+    flex-grow:1;
+    margin-left: 12.5rem;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+}
+.right-layout.collapsed .toggle-btn {
+    right: 1rem;
+}
+
+.data-summary {
+    margin: 15px; /* 使用统一的边距简化布局 */
+    border-radius: 10px; /* 圆角半径保持不变，视觉效果良好 */
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap; /* 允许子元素换行 */
+    gap: 15px; /* 设置子元素之间的间隙 */
+    padding:5px;
+    /* 使用百分比或视口单位来替代固定单位 */
+    width: calc(100% - 40px); /* 减去左右边距和内边距 */
+}
+.summary-item {
+    display: flex;
+    /* 使用flex-basis代替宽度，以便更灵活地调整大小 */
+    flex-basis: calc(33.333% - 15px);
+    height: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    /* 新增：允许元素在需要时自动换行 */
+    flex-wrap: wrap;
+}
+
+.connection-list {
+    margin: 15px; /* 统一上下左右的边距 */
+    border-radius: 10px;
+    background-color: white;
+    border-radius: 10px;
+    padding:5px;
+    /* 使用百分比以适应更小的屏幕 */
+    width: calc(100% - 40px); /* 减去40px是总边距和内边距 */
+}
+
+.nat-item {
+    position: relative;
+    display: flex;
+    align-items: center; /* 垂直居中对齐 */
+    justify-content: space-between; /* 在子元素间分配剩余空间 */
+}
+.table-item
+{
+    position: relative;
+    display: flex;
+    align-items: center; /* 垂直居中对齐 */
+    justify-content: left; /* 在子元素间分配剩余空间 */
+}
+
+.update-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: none;
+
+    /* 添加SVG 图标 */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 24 24'%3E%3Cpath fill='%23007bff' d='M12.077 19q-2.931 0-4.966-2.033q-2.034-2.034-2.034-4.964t2.034-4.966T12.077 5q1.783 0 3.339.847q1.555.847 2.507 2.365V5h1v5.23h-5.23v-1h3.7q-.782-1.495-2.198-2.363T12.077 6q-2.5 0-4.25 1.75T6.077 12t1.75 4.25t4.25 1.75q1.925 0 3.475-1.1t2.175-2.9h1.062q-.662 2.246-2.514 3.623T12.077 19'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 24px; /* 图标宽度 */
+    height: 24px; /* 图标高度 */
+    padding: 0;
+}
+.copy-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    /* display: none; */
+
+    /* 添加SVG 图标 */
+    background-image: url("clipboard2-plus.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 24px; /* 图标宽度 */
+    height: 24px; /* 图标高度 */
+    padding: 0;
+}
+.copy-btn:hover {
+    /* 鼠标悬停时的样式 */
+    background-color: rgba(0, 0, 0, 0.1); /* 添加半透明背景 */
+}
+
+.copy-btn:active {
+    /* 鼠标点击时的样式 */
+    background-color: rgba(0, 0, 0, 0.2); /* 更深的半透明背景 */
+    transform: scale(0.95); /* 缩小10%，以提供按下效果 */
+    transition: transform 0.1s ease-in-out; /* 缩放动画 */
+}
+
+.nat-item:hover .update-btn {
+    display: block;
+}
+
+.update-btn:hover {
+    /* 鼠标悬停时的样式 */
+    background-color: rgba(0, 0, 0, 0.1); /* 添加半透明背景 */
+}
+
+.update-btn:active {
+    /* 鼠标点击时的样式 */
+    background-color: rgba(0, 0, 0, 0.2); /* 更深的半透明背景 */
+    transform: scale(0.95); /* 缩小10%，以提供按下效果 */
+    transition: transform 0.1s ease-in-out; /* 缩放动画 */
+}
+
+
+

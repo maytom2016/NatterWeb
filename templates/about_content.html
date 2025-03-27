@@ -1,0 +1,9 @@
+<!-- 用来ajax更新的页面,不包括导航栏和base_head的部分，
+content只需要有当前页面JS脚本、CSS和主页内容。-->
+{% extends "about.html" %}
+
+{% block head %}{% endblock %}
+
+{% block body %}
+    {{ about_layout() }}
+{% endblock %}
