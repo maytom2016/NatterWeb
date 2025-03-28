@@ -14,6 +14,8 @@ Natter的套壳WEB UI。本程序是一个名为Natter的Web图形用户界面�
 ## 安装
 ~~~
 git clone  https://github.com/maytom2016/NatterWeb.git
+~~~
+~~~
 pip install -r requirements.txt
 ~~~
 ## 启动
