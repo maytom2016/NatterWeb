@@ -27,12 +27,12 @@ python3 app.py
 
 作用：显示Natter Web的版本信息。
 
-示例：在命令行中输入python app.py -V或者python app.py --version，程序将输出类似Natter Web <版本号>的版本信息。
+示例：在命令行中输入python3 app.py -V或者python3 app.py --version，程序将输出类似Natter Web <版本号>的版本信息。
 
 ### 2. -r
 作用：在程序启动时运行已启用的Natter规则。
 
-示例：如果在命令行输入python app.py -r，程序启动时会运行相关规则。
+示例：如果在命令行输入python3 app.py -r，程序启动时会运行相关规则。
 
 ### 3. -t
 
@@ -40,7 +40,7 @@ python3 app.py
 
 作用：指定程序监听的IP地址。
 
-示例：如果要将监听地址设置为192.168.1.100，可以在命令行输入python app.py -t 192.168.1.100。
+示例：如果要将监听地址设置为192.168.1.100，可以在命令行输入python3 app.py -t 192.168.1.100。
 
 ### 4. -p
 
@@ -48,7 +48,7 @@ python3 app.py
 
 作用：指定程序监听的端口号。
 
-示例：若想将监听端口设置为8080，在命令行输入python your_program.py -p 8080即可。
+示例：若想将监听端口设置为8080，在命令行输入python3 app.py -p 8080即可。
 
 ## 关于插件及开发说明
 
