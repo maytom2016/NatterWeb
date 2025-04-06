@@ -25,7 +25,7 @@ python3 app.py
 ## Dockerfile启动
 
 ~~~
-docker build -t natterweb
+docker build -t natterweb .
 ~~~
 
 ~~~
