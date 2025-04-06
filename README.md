@@ -22,6 +22,35 @@ pip install -r requirements.txt
 ~~~
 python3 app.py
 ~~~
+## Dockerfile启动
+
+~~~
+docker build -t natterweb
+~~~
+
+~~~
+docker run -d --network=host natterweb
+~~~
+
+
+
+## Docker构建细节
+默认依赖的python:3.11-alpine3.21
+
+可以提前拉取此镜像
+~~~
+docker pull python:3.11-alpine3.21
+~~~
+若不是从官方源拉取的，也应该重新标记，以免重复尝试从官方源获取相同镜像。
+~~~
+docker tag xxx python:3.11-alpine3.21
+~~~
+其中xxx为:提前拉取到的本地镜像ID,可以通过如下命令查看
+~~~
+docker image ls|grep python
+~~~
+也可以使用其他python镜像构建，因为开发是使用3.11版本，所以最好使用此版本及以上来构建环境。
+
 ## 参数
 ### 1. --version或-V
 
