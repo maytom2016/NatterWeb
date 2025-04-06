@@ -31,8 +31,10 @@ docker build -t natterweb .
 ~~~
 docker run -d --network=host natterweb
 ~~~
-
-
+或指定端口
+~~~
+docker run -e APP_PORT=8000 -d --network=host natterweb
+~~~
 
 ## Docker构建细节
 默认依赖的python:3.11-alpine3.21
