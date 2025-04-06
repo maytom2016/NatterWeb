@@ -132,7 +132,9 @@ function Ajax_update(url)
     }
     //添加link css标签
     addUniqueLinksToHead(doc,data)
-
+    if (document.querySelector(".task_success")) {
+        updateTextColor();
+    }
     //        addScriptIfNotExists('/static'+url+'js');
     //        var script = document.createElement('script');
     //        script.src = '/static/manager.js'; // 新脚本的路径
@@ -158,6 +160,7 @@ function navclick(e){
 //    console.log("原地tp,什么也不做");
 //    return false;}
     Ajax_update(url)
+
 }
 document.addEventListener('DOMContentLoaded', function() {
   // 为所有类名为'ajax-link'的a标签添加点击事件监听器

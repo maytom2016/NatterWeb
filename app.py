@@ -51,7 +51,7 @@ class BaseConfig:
     }
     # 检测nat type的脚本路径
     checknatpy = './venv/Thirdparty/natter-check.py'
-    __version__ = "1.0.0_bate2"
+    __version__ = "1.0.0_bate3"
 
 def init_vars():
     global rules
