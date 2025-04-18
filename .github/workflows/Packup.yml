@@ -28,6 +28,7 @@ jobs:
                   --standalone \
                   --enable-plugin=anti-bloat \
                   --include-module=plugin.notification.pg \
+                  --include-data-file=./plugin/notification/pg.py=plugin/notification/pg.py \
                   --include-data-dir=./static/=static/ \
                   --include-data-dir=./templates/=templates/ \
                   --include-data-dir=./plugin/=plugin/ \
