@@ -1,3 +1,6 @@
+# 在文件顶部添加（实际不会运行，仅供Nuitka分析）
+if False:
+    from plugin.notification import pg
 import ast
 import importlib
 import ipaddress
