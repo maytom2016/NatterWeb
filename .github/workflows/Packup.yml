@@ -38,15 +38,12 @@ jobs:
         run: |
           cd dist
           tar -czvf app.tar.gz app.dist/
-          mv app.tar.gz ../
+          mkdir -p ../artifact
+          mv app.tar.gz ../artifact/
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: "v$(date +'%Y%m%d%H%M')"  # 使用时间戳作为临时tag
-          name: "Standalone Executable $(date +'%Y-%m-%d')"
-          body: "Nuitka standalone build of the application"
-          files: |
-            app.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: standalone-app
+          path: artifact/app.tar.gz
+          retention-days: 7  # 设置产物保留天数
