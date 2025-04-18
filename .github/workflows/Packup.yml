@@ -25,14 +25,14 @@ jobs:
       - name: Build with Nuitka
         run: |
           python -m nuitka \
-            --standalone \
-            --enable-plugin=anti-bloat \
-            --include-data-dir=./plugin/=plugin/ \
-            --include-data-dir=./plugin/notification/templates/=plugin/notification/templates/ \
-            --include-data-dir=./plugin/notification/static/=plugin/notification/static/ \
-            --follow-imports \
-            --output-dir=dist \
-            app.py
+                  --include-data-dir=./static/=static/ \
+                  --include-data-dir=./templates/=templates/ \
+                  --include-data-dir=./plugin/=plugin/ \
+                  --include-data-dir=./plugin/notification/templates/=plugin/notification/templates/ \
+                  --include-data-dir=./plugin/notification/static/=plugin/notification/static/ \
+                  --follow-imports \
+                  --output-dir=dist \
+                  app.py
 
       - name: Compress the output
         run: |
