@@ -25,6 +25,8 @@ jobs:
       - name: Build with Nuitka
         run: |
           python -m nuitka \
+                  --standalone \
+                  --enable-plugin=anti-bloat \
                   --include-data-dir=./static/=static/ \
                   --include-data-dir=./templates/=templates/ \
                   --include-data-dir=./plugin/=plugin/ \
