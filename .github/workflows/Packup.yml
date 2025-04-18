@@ -27,7 +27,7 @@ jobs:
           python -m nuitka \
                   --standalone \
                   --enable-plugin=anti-bloat \
-                  --include-module=plugin.notification.pg \ 
+                  --include-module=plugin.notification.pg \
                   --include-data-dir=./static/=static/ \
                   --include-data-dir=./templates/=templates/ \
                   --include-data-dir=./plugin/=plugin/ \
