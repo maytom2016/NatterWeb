@@ -21,11 +21,6 @@ jobs:
           pip install pyinstaller
           pip install -r requirements.txt
           
-      - name: Adapt paths for PyInstaller
-        run: |
-          python path_adapter.py
-          cat app.py  # 可选：查看修改结果
-          
       - name: Build with PyInstaller (Direct)
         run: |
             pyinstaller \
