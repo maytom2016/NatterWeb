@@ -1,4 +1,6 @@
 # 在文件顶部添加（实际不会运行，仅供Nuitka分析）
+import sys
+
 if False:
     from plugin.notification import pg
 import ast
@@ -54,7 +56,15 @@ class BaseConfig:
     }
     # 检测nat type的脚本路径
     checknatpy = './venv/Thirdparty/natter-check.py'
-    __version__ = "1.0.0_bate3"
+    __version__ = "1.0.0_bate4"
+
+# 处理打包后的资源路径
+def get_resource_path(relative_path):
+    if getattr(sys, 'frozen', False):
+        base_dir = sys._MEIPASS  # PyInstaller 临时解压目录
+    else:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_dir, relative_path)
 
 def init_vars():
     global rules
@@ -102,13 +112,17 @@ def init_vars():
         # print("clean")
         # Clean up
     #fastapi主实例
+    static_path=get_resource_path("static")
+    plugin_path = get_resource_path("./plugin")
+    templates_path=get_resource_path("templates")
     app = FastAPI(lifespan=lifespan)
     # 推荐的挂载静态文件目录的方式
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+    app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 
     temp_list = Plugin.find_temp_filefold("./plugin")
-    temp_list.append("templates")
+    temp_list.append(templates_path)
+    print(temp_list)
     shv.templates = Jinja2Templates(directory=temp_list)
     print("appfile1", id(shv.templates))
     templates = shv.templates
@@ -738,7 +752,7 @@ class Plugin:
             split_path = root.split(os.sep)
             if len(split_path) - split_path.count('') == 3 and 'templates' in dirs:
                 path=os.path.join(root, "templates")
-                temp_list.append(path)
+                temp_list.append(get_resource_path(path.replace('./','')))
         return temp_list
 
     #寻找插件子应用的PY文件。
