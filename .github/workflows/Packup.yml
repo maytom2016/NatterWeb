@@ -20,11 +20,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyinstaller
           pip install -r requirements.txt
-
+          
+      - name: Adapt paths for PyInstaller
+        run: |
+          python path_adapter.py
+          cat app.py  # 可选：查看修改结果
+          
       - name: Build with PyInstaller (Direct)
         run: |
-          python buildup.py
-
+            pyinstaller \
+            --name=app \
+            --onefile \
+            --add-data="shared_vars.py:." \
+            --add-data="plugin/:plugin" \
+            --add-data="static/:static" \
+            --add-data="templates/:templates" \
+            --hidden-import=plugin.notification.pg \
+            app.py
+            
       - name: Verify build
         run: |
           ls -lh dist/app
