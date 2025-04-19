@@ -23,15 +23,7 @@ jobs:
 
       - name: Build with PyInstaller (Direct)
         run: |
-          pyinstaller \
-            --name=app \
-            --onefile \
-            --add-data="shared_vars.py:." \
-            --add-data="plugin/:plugin" \
-            --add-data="static/:static" \
-            --add-data="templates/:templates" \
-            --hidden-import=plugin.notification.pg \
-            app.py
+          python buildup.py
 
       - name: Verify build
         run: |
