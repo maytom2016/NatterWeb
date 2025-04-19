@@ -1,4 +1,4 @@
-name: Build Python Standalone Executable
+name: Build with PyInstaller
 
 on:
   workflow_dispatch:  # 手动触发
@@ -11,50 +11,45 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  # 根据你的项目需要调整版本
+          python-version: '3.10'
 
-      - name: Install Nuitka and dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install nuitka
-          pip install -r requirements.txt  # 如果有requirements.txt
-      - name: Precompile pg.py
+          pip install pyinstaller
+          pip install -r requirements.txt  # 如果有依赖文件
+
+      - name: Generate PyInstaller spec file
         run: |
-          python3 -c "import py_compile; py_compile.compile('./plugin/notification/pg.py', './plugin/notification/pg.pyc')"
-          ls -l ./plugin/notification/pg.py*  # 验证是否生成pyc
-      - name: Build with Nuitka
+          pyi-makespec \
+            --name=app \
+            --onefile \
+            --add-data="shared_vars.py:." \
+            --add-data="plugin/:plugin" \
+            --add-data="static/:static" \
+            --add-data="templates/:templates" \
+            app.py
+
+      - name: Edit spec file for dynamic imports
         run: |
-          python -m nuitka \
-                  --standalone \
-                  --onefile \
-                  --include-data-file=./plugin/notification/pg.pyc=plugin/notification/pg.pyc \
-                  --include-data-dir=./static/=static/ \
-                  --include-data-dir=./templates/=templates/ \
-                  --include-data-dir=./plugin/=plugin/ \
-                  --include-data-dir=./plugin/notification/templates/=plugin/notification/templates/ \
-                  --include-data-dir=./plugin/notification/static/=plugin/notification/static/ \
-                  --follow-imports \
-                  --output-dir=dist \
-                  app.py
-                  
-      - name: Verify Package
+          # 在生成的 app.spec 中插入隐藏导入
+          sed -i '/a = Analysis(/a \    hiddenimports=["plugin.notification.pg"],' app.spec
+
+      - name: Build with PyInstaller
         run: |
-          strings dist/app | grep "pg.pyc"  # 确认pyc文件已包含
-          ls -l dist/app.dist/plugin/notification/  # 检查输出目录结构
-          
-      - name: Compress the output
+          pyinstaller app.spec
+
+      - name: Verify build
         run: |
-          cd dist
-          tar -czvf app.tar.gz app.dist/
-          mkdir -p ../artifact
-          mv app.tar.gz ../artifact/
+          ls -lh dist/app  # 检查文件大小
+          strings dist/app | grep "pg.py"  # 验证动态模块是否包含
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: standalone-app
-          path: artifact/app.tar.gz
-          retention-days: 7  # 设置产物保留天数
+          name: app-binary
+          path: dist/app
+          retention-days: 7
