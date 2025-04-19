@@ -64,7 +64,7 @@ def get_resource_path(relative_path):
         base_dir = sys._MEIPASS  # PyInstaller 临时解压目录
     else:
         base_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(base_dir, relative_path)
+    return os.path.normpath(os.path.join(base_dir, relative_path))
 
 def init_vars():
     global rules
@@ -113,14 +113,14 @@ def init_vars():
         # Clean up
     #fastapi主实例
     static_path=get_resource_path("static")
-    plugin_path = get_resource_path("./plugin")
+    plugin_path = get_resource_path("plugin")
     templates_path=get_resource_path("templates")
     app = FastAPI(lifespan=lifespan)
     # 推荐的挂载静态文件目录的方式
     app.mount("/static", StaticFiles(directory=static_path), name="static")
 
-
-    temp_list = Plugin.find_temp_filefold("./plugin")
+    print(plugin_path)
+    temp_list = Plugin.find_temp_filefold(plugin_path)
     temp_list.append(templates_path)
     print(temp_list)
     shv.templates = Jinja2Templates(directory=temp_list)
@@ -750,9 +750,9 @@ class Plugin:
         temp_list=[]
         for root, dirs, files in os.walk(root_path):
             split_path = root.split(os.sep)
-            if len(split_path) - split_path.count('') == 3 and 'templates' in dirs:
-                path=os.path.join(root, "templates")
-                temp_list.append(get_resource_path(path.replace('./','')))
+            if split_path.count("templates")>=1:
+                path=os.path.join(root)
+                temp_list.append(path)
         return temp_list
 
     #寻找插件子应用的PY文件。
