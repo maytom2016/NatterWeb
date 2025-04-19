@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: Ubuntu 20.04
+    runs-on: ubuntu 20.04
 
     steps:
       - name: Checkout code
@@ -21,14 +21,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install nuitka
           pip install -r requirements.txt  # 如果有requirements.txt
-
+      - name: Precompile pg.py
+        run: |
+          python3 -c "import py_compile; py_compile.compile('./plugin/notification/pg.py', './plugin/notification/pg.pyc')"
+          ls -l ./plugin/notification/pg.py*  # 验证是否生成pyc
       - name: Build with Nuitka
         run: |
           python -m nuitka \
                   --standalone \
-                  --enable-plugin=anti-bloat \
-                  --include-module=plugin.notification.pg \
-                  --include-data-file=./plugin/notification/pg.py=plugin/notification/pg.py \
+                  --onefile \
+                  --include-data-file=./plugin/notification/pg.pyc=plugin/notification/pg.pyc \
                   --include-data-dir=./static/=static/ \
                   --include-data-dir=./templates/=templates/ \
                   --include-data-dir=./plugin/=plugin/ \
@@ -37,7 +39,12 @@ jobs:
                   --follow-imports \
                   --output-dir=dist \
                   app.py
-
+                  
+      - name: Verify Package
+        run: |
+          strings dist/app | grep "pg.pyc"  # 确认pyc文件已包含
+          ls -l dist/app.dist/plugin/notification/  # 检查输出目录结构
+          
       - name: Compress the output
         run: |
           cd dist
