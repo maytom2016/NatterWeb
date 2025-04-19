@@ -20,7 +20,7 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger('PathAdapter')
 
 # 需要处理的文件列表
-TARGET_FILES = ["path_test.py"]
+TARGET_FILES = ["app.py", "plugin/notification/pg.py"]
 
 
 class PathTransformer(ast.NodeTransformer):
