@@ -759,7 +759,10 @@ class Plugin:
     @staticmethod
     def find_py_files(root_path):
         py_files = []
+        root_path=get_resource_path(root_path)
+        print(root_path)
         for root, dirs, files in os.walk(root_path):
+            print("root:"+root)
             if root.count(os.sep) - root_path.count(os.sep) == 1:
                 for file in files:
                     if file.endswith('.py') and file!= '__init__.py':
@@ -781,6 +784,7 @@ class Plugin:
     @staticmethod
     def detect_plugin():
         py_files = Plugin.find_py_files( "./plugin")
+        print(py_files)
         py_files_no_loop_import=[]
         for py in py_files:
             if not Plugin.check_import('app',py):
@@ -797,7 +801,8 @@ class Plugin:
                     part = part[: -3]
                 if part:
                     plugin_name_parts.append(part)
-            plugin_name = '.'.join(plugin_name_parts)
+            plugin_name = '.'.join(plugin_name_parts[-3::])
+            print("plugin_name"+plugin_name)
             plugin_list.append(plugin_name)
         return plugin_list
 
@@ -807,10 +812,33 @@ class Plugin:
         list=main_dict['nav_items']
         list.append(plugin_obj.BaseConfig.nav)
         print(main_dict)
+
+    @staticmethod
+    def safe_import(module_name):
+        try:
+            # 先尝试常规导入
+            return importlib.import_module(module_name)
+        except ImportError:
+            if getattr(sys, 'frozen', False):
+                # 打包环境下转换模块路径为文件路径
+                module_path = os.path.join(
+                    sys._MEIPASS,
+                    *module_name.split('.')
+                ) + '.py'
+                # 动态加载模块
+                spec = importlib.util.spec_from_file_location(module_name, module_path)
+                if spec is None:
+                    raise ImportError(f"无法创建模块规范: {module_path}")
+                module = importlib.util.module_from_spec(spec)
+                sys.modules[module_name] = module
+                spec.loader.exec_module(module)
+                return module
+            raise  # 非打包环境直接抛出原异常
+
     @classmethod
     def load_plugin(cls,plugin_name):
         try:
-            module = importlib.import_module(plugin_name)
+            module = Plugin.safe_import(plugin_name)
             print(module)
             pg = getattr(module, 'pg')
             # for a in pg.routes:
@@ -825,6 +853,7 @@ class Plugin:
     def load_all_plugin(cls):
         plugin_list=Plugin.detect_plugin()
         for p in plugin_list:
+
             plugin = cls.load_plugin(p)
             # print(plugin.router)
             app.mount("/plugin",plugin)
