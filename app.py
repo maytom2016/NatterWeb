@@ -794,7 +794,7 @@ class Plugin:
         nonedot_py_files=[s.replace('.py','').replace('.', '') for s in py_files_no_loop_import]
         plugin_list = []
         for py_file in nonedot_py_files:
-            parts = py_file.split('/')
+            parts = py_file.split(os.sep)
             plugin_name_parts = []
             for part in parts:
                 if part.endswith('.py'):
