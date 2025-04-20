@@ -38,7 +38,7 @@ jobs:
       - name: Verify Windows build
         run: |
           dir dist\
-          tar -cvzf app-win.tar.gz disk
+          tar -cvzf app-win.tar.gz dist
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
