@@ -297,10 +297,9 @@ async def checknat(task_id =None):
 async def launch_natter_task(cmdlist, rule_id, task_id=None):
     # signal.signal(signal.SIGINT, signal.SIG_IGN)  # 忽略 SIGINT 以确保不被默认处理
     # signal.signal(signal.SIGINT, signal_handler)
-    script_directory = os.path.dirname(os.path.abspath(__file__))
+    # script_directory = os.path.dirname(os.path.abspath(__file__))
     # file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
     file_path = os.path.normpath(os.path.join(
-        script_directory,
         "venv",
         "Thirdparty",
         "natter.py"
