@@ -527,7 +527,7 @@ def bind_all_router():
     #     return {"message": f"任务id{select}被改变了"}
     @app.get("/favicon.ico")
     async def get_favicon():
-        return FileResponse("static/favicon.ico")
+        return FileResponse(get_resource_path("static/favicon.ico"))
 
     @app.get("/", response_class=HTMLResponse)
     async def read_root(request: Request,x_update_content: str = Header(None)):
