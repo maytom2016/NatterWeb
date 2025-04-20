@@ -463,6 +463,8 @@ def get_resource_path(relative_path):
 
     # 拼接路径后规范化
     full_path = os.path.normpath(os.path.join(base_dir, relative_path))
+    print("base_dir"+''.join(base_dir))
+    print("relative_path" + ''.join(relative_path))
     return full_path.replace('\\', '/')  # 可选：强制统一输出分隔符
 
 if __name__ != "__main__":
