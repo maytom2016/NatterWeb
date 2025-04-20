@@ -2,6 +2,7 @@
 import email
 import json
 import os
+import platform
 import random
 import signal
 import smtplib
@@ -458,7 +459,11 @@ def get_resource_path(relative_path):
 if __name__ != "__main__":
     global pg
     pg= FastAPI()
-    static_dir = get_resource_path("./static")
+    sys = platform.system()
+    if sys == "Windows":
+        static_dir = get_resource_path("./plugin/notification/static")
+    else:
+        static_dir = get_resource_path("./static")
     print("plugin_static_dir"+static_dir)
     pg.mount("/notice/static", StaticFiles(directory=static_dir), name="notice_static")
     mailserver={"qq":"qq邮箱","163":"163邮箱","Gmail":"Gmail邮箱","outlook":"Outlook邮箱"}
