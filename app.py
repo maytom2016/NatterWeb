@@ -771,7 +771,7 @@ class Plugin:
     #导入插件时应该检查一下是否存在导入主程序py，如果存在，则不加载插件，否则可能代码重复执行两次可能引起功能异常。
     @staticmethod
     def check_import(module_name, file_path):
-        with open(file_path, 'r') as f:
+        with open(file_path, 'r', encoding='utf-8') as f:
             source = f.read()
         tree = ast.parse(source)
         for node in ast.walk(tree):
