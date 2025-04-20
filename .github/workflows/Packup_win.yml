@@ -33,7 +33,7 @@ jobs:
             --add-data="static;static" `
             --add-data="templates;templates" `
             --hidden-import=plugin.notification.pg `
-            --console  # Windows 建议显式指定控制台/窗口模式
+            --console `
             app.py
 
       - name: Verify Windows build
