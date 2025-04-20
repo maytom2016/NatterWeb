@@ -44,5 +44,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-windows
-          path: dist\app.exe
+          path: dist\app-win.tar.gz
           retention-days: 7
