@@ -311,6 +311,7 @@ async def launch_natter_task(cmdlist, rule_id, task_id=None):
         "natter.py"
     ))
     print(str(file_path))
+    print("sysexec"+sys.executable)
     command = ['python', file_path] + cmdlist
     process = await asyncio.create_subprocess_exec(*command,
                                                    stdout=subprocess.PIPE,
