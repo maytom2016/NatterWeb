@@ -471,7 +471,7 @@ if __name__ != "__main__":
     sys = platform.system()
     print(sys)
     if sys == "Windows":
-        static_dir = get_resource_path("./plugin/notification/static")
+        static_dir = get_resource_path("./static")
     else:
         static_dir = get_resource_path("./static")
     print("plugin_static_dir"+static_dir)
