@@ -299,7 +299,13 @@ async def launch_natter_task(cmdlist, rule_id, task_id=None):
     # signal.signal(signal.SIGINT, signal_handler)
     # script_directory = os.path.dirname(os.path.abspath(__file__))
     # file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
+    #pyinstaller环境路径处理
+    if getattr(sys, 'frozen', False):
+        exe_path = os.path.dirname(os.path.realpath(sys.executable))
+    else:
+        exe_path = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.normpath(os.path.join(
+        exe_path,
         "venv",
         "Thirdparty",
         "natter.py"
