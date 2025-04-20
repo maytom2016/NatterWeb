@@ -5,6 +5,7 @@ import os
 import random
 import signal
 import smtplib
+import sys
 import threading
 import time
 from email.mime.text import MIMEText
@@ -447,10 +448,18 @@ def running_smtp_service():
         else:
             LogManager.write_log("相同任务的线程已经在运行，不能再次启动。")
 
+def get_resource_path(relative_path):
+    if getattr(sys, 'frozen', False):
+        base_dir = sys._MEIPASS  # PyInstaller 临时解压目录
+    else:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.normpath(os.path.join(base_dir, relative_path))
+
 if __name__ != "__main__":
     global pg
     pg= FastAPI()
-    static_dir = os.path.abspath("./plugin/notification/static")
+    static_dir = get_resource_path("./plugin/notification/static")
+    print("plugin_static_dir"+static_dir)
     pg.mount("/notice/static", StaticFiles(directory=static_dir), name="notice_static")
     mailserver={"qq":"qq邮箱","163":"163邮箱","Gmail":"Gmail邮箱","outlook":"Outlook邮箱"}
     signal.signal(signal.SIGTERM, signal_handler)
