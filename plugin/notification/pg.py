@@ -449,17 +449,27 @@ def running_smtp_service():
         else:
             LogManager.write_log("相同任务的线程已经在运行，不能再次启动。")
 
+
 def get_resource_path(relative_path):
+    """获取安全的跨平台资源路径"""
     if getattr(sys, 'frozen', False):
-        base_dir = sys._MEIPASS  # PyInstaller 临时解压目录
+        base_dir = sys._MEIPASS
     else:
         base_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.normpath(os.path.join(base_dir, relative_path))
+
+    # 统一转换为正斜杠避免混用
+    base_dir = base_dir.replace('\\', '/')
+    relative_path = relative_path.replace('\\', '/')
+
+    # 拼接路径后规范化
+    full_path = os.path.normpath(os.path.join(base_dir, relative_path))
+    return full_path.replace('\\', '/')  # 可选：强制统一输出分隔符
 
 if __name__ != "__main__":
     global pg
     pg= FastAPI()
     sys = platform.system()
+    print(sys)
     if sys == "Windows":
         static_dir = get_resource_path("./plugin/notification/static")
     else:
