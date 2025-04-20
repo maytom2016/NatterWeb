@@ -27,7 +27,6 @@ jobs:
         run: |
           pyinstaller `
             --name=app `
-            --onefile `
             --add-data="shared_vars.py;." `
             --add-data="plugin;plugin" `
             --add-data="static;static" `
@@ -38,8 +37,8 @@ jobs:
 
       - name: Verify Windows build
         run: |
-          dir dist\app.exe
-          strings dist\app.exe | Select-String "pg.py"  # PowerShell 版本的 strings 检查
+          dir dist\
+          zip -r app.zip disk\
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
