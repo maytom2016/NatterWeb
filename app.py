@@ -13,7 +13,7 @@ import zipfile
 
 import uvicorn
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, BackgroundTasks, Header
+from fastapi import FastAPI, Request, BackgroundTasks, Header, Path
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from poetry.core.masonry.utils import module
@@ -298,7 +298,14 @@ async def launch_natter_task(cmdlist, rule_id, task_id=None):
     # signal.signal(signal.SIGINT, signal.SIG_IGN)  # 忽略 SIGINT 以确保不被默认处理
     # signal.signal(signal.SIGINT, signal_handler)
     script_directory = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
+    # file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
+    file_path = os.path.normpath(os.path.join(
+        script_directory,
+        "venv",
+        "Thirdparty",
+        "natter.py"
+    ))
+    print(str(file_path))
     command = ['python', file_path] + cmdlist
     process = await asyncio.create_subprocess_exec(*command,
                                                    stdout=subprocess.PIPE,
