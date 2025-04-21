@@ -23,14 +23,7 @@ jobs:
           pip install -r requirements.txt  # 如果有requirements.txt
           
       - name: Build with Nuitka
-        run: |
-          python -m nuitka \
-                  --standalone \
-                  --onefile \
-                  --output-dir=dist \
-                  --follow-imports \
-                  ntsub.py
-                  
+        run: |    
           python -m nuitka \
                   --standalone \
                   --onefile \
