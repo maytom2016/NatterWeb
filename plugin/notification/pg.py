@@ -462,15 +462,15 @@ def get_resource_path(relative_path):
 
     # 拼接路径后规范化
     full_path = os.path.normpath(os.path.join(base_dir, relative_path))
-    print("base_dir"+''.join(base_dir))
-    print("relative_path" + ''.join(relative_path))
+    # print("base_dir"+''.join(base_dir))
+    # print("relative_path" + ''.join(relative_path))
     return full_path.replace('\\', '/')  # 可选：强制统一输出分隔符
 
 if __name__ != "__main__":
     global pg
     pg= FastAPI()
     static_dir = get_resource_path("./static")
-    print("plugin_static_dir"+static_dir)
+    # print("plugin_static_dir"+static_dir)
     pg.mount("/notice/static", StaticFiles(directory=static_dir), name="notice_static")
     mailserver={"qq":"qq邮箱","163":"163邮箱","Gmail":"Gmail邮箱","outlook":"Outlook邮箱"}
     signal.signal(signal.SIGTERM, signal_handler)
