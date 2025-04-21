@@ -322,6 +322,7 @@ async def launch_natter_task(cmdlist, rule_id, task_id=None):
     # file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
 
     command = [BaseConfig.exe_name, BaseConfig.file_path] + cmdlist
+    print("command:"+str(command))
     process = await asyncio.create_subprocess_exec(*command,
                                                    stdout=subprocess.PIPE,
                                                    stderr=subprocess.PIPE)
@@ -358,7 +359,7 @@ async def launch_natter_task(cmdlist, rule_id, task_id=None):
             if pro and sourceip:
                 async with aiofiles.open("./logs/"+ pro + sourceip +".txt", 'a') as file:
                     await file.write(linestr)
-            # print(logs_dict)
+            print(logs_dict)
 
 
 def is_nested(lst):
