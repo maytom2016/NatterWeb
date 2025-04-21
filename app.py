@@ -67,7 +67,7 @@ class BaseConfig:
     def get_exe():
         if getattr(sys, 'frozen', False):
             # pyinstaller环境路径处理
-            exe_path = os.path.dirname(os.path.realpath(sys.executable))
+            exe_path = os.getcwd()
             if sys.platform.startswith("win"):
                 exe_name = '.\ntsub'
             else:
@@ -144,14 +144,14 @@ def init_vars():
     # 推荐的挂载静态文件目录的方式
     app.mount("/static", StaticFiles(directory=static_path), name="static")
 
-    print(plugin_path)
+    # print(plugin_path)
     temp_list = Plugin.find_temp_filefold(plugin_path)
     temp_list.append(templates_path)
-    print(temp_list)
+    # print(temp_list)
     shv.templates = Jinja2Templates(directory=temp_list)
-    print("appfile1", id(shv.templates))
-    templates = shv.templates
-    print("appfile2", id(templates))
+    # print("appfile1", id(shv.templates))
+    # templates = shv.templates
+    # print("appfile2", id(templates))
     # print (main_dict)
     # print('initdict')
 
@@ -327,7 +327,7 @@ async def launch_natter_task(cmdlist, rule_id, task_id=None):
     # file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
 
     command = [BaseConfig.exe_name, BaseConfig.file_path] + cmdlist
-    print("command:"+str(command))
+    # print("command:"+str(command))
     process = await asyncio.create_subprocess_exec(*command,
                                                    stdout=subprocess.PIPE,
                                                    stderr=subprocess.PIPE)
@@ -364,7 +364,7 @@ async def launch_natter_task(cmdlist, rule_id, task_id=None):
             if pro and sourceip:
                 async with aiofiles.open("./logs/"+ pro + sourceip +".txt", 'a') as file:
                     await file.write(linestr)
-            print(logs_dict)
+            # print(logs_dict)
 
 
 def is_nested(lst):
@@ -421,6 +421,7 @@ def get_natter_version():
     # script_directory = os.path.dirname(os.path.abspath(__file__))
     # file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
     result = subprocess.run([BaseConfig.exe_name, BaseConfig.file_path, '--version'], capture_output=True)
+
     # print("Standard Output:", result.stdout.decode())
     # print("Standard Error:", result.stderr.decode())
     if result.stdout.decode():
@@ -788,9 +789,9 @@ class Plugin:
     def find_py_files(root_path):
         py_files = []
         root_path=get_resource_path(root_path)
-        print(root_path)
+        # print(root_path)
         for root, dirs, files in os.walk(root_path):
-            print("root:"+root)
+            # print("root:"+root)
             if root.count(os.sep) - root_path.count(os.sep) == 1:
                 for file in files:
                     if file.endswith('.py') and file!= '__init__.py':
@@ -812,7 +813,7 @@ class Plugin:
     @staticmethod
     def detect_plugin():
         py_files = Plugin.find_py_files( "./plugin")
-        print(py_files)
+        # print(py_files)
         py_files_no_loop_import=[]
         for py in py_files:
             if not Plugin.check_import('app',py):
@@ -830,7 +831,7 @@ class Plugin:
                 if part:
                     plugin_name_parts.append(part)
             plugin_name = '.'.join(plugin_name_parts[-3::])
-            print("plugin_name"+plugin_name)
+            print("plugin_name:"+plugin_name)
             plugin_list.append(plugin_name)
         return plugin_list
 
@@ -867,13 +868,13 @@ class Plugin:
     def load_plugin(cls,plugin_name):
         try:
             module = Plugin.safe_import(plugin_name)
-            print(module)
+            # print(module)
             pg = getattr(module, 'pg')
             # for a in pg.routes:
             #     print(a.path)
             print(module.BaseConfig.nav)
             Plugin.add_plugin_nav_item(module)
-            print(type(module))
+            # print(type(module))
             return pg
         except (ModuleNotFoundError, AttributeError) as e:
             print(f"Error: {e}")
