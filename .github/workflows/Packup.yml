@@ -33,6 +33,8 @@ jobs:
             --hidden-import=plugin.notification.pg \
             app.py
             
+            pyinstaller -F ntsub.py
+            
       - name: Verify build
         run: |
           ls -lh dist/app
