@@ -38,11 +38,10 @@ jobs:
       - name: Verify Windows build
         run: |
           dir dist\
-          tar -cvzf app-win.tar.gz dist
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-windows
-          path: app-win.tar.gz
+          path: dist
           retention-days: 7
