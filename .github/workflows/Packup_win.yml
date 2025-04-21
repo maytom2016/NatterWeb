@@ -35,7 +35,7 @@ jobs:
             --console `
             app.py
           pyinstaller -F ntsub.py
-          mv ntsub.exe dist\app\
+          mv dist\ntsub.exe dist\app\
           
       - name: Verify Windows build
         run: |
