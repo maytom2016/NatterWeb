@@ -27,6 +27,13 @@ jobs:
           python -m nuitka \
                   --standalone \
                   --onefile \
+                  --output-dir=dist \
+                  --follow-imports \
+                  ntsub.py
+                  
+          python -m nuitka \
+                  --standalone \
+                  --onefile \
                   --include-data-file=./plugin/notification/pg.py=plugin/notification/pg.py \
                   --include-data-dir=./static/=static/ \
                   --include-data-dir=./templates/=templates/ \
