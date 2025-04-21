@@ -33,6 +33,8 @@ jobs:
             app.py
             
             pyinstaller -F ntsub.py
+
+            mv dist/ntsub dist/app/ntsub
             
       - name: Verify build
         run: |
