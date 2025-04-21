@@ -452,7 +452,7 @@ def running_smtp_service():
 def get_resource_path(relative_path):
     """获取安全的跨平台资源路径"""
     if getattr(sys, 'frozen', False):
-        base_dir = sys._MEIPASS
+        base_dir = os.path.join(sys._MEIPASS,"plugin","notification")
     else:
         base_dir = os.path.dirname(os.path.abspath(__file__))
 
