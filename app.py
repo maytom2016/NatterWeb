@@ -150,7 +150,7 @@ def init_vars():
     # print(temp_list)
     shv.templates = Jinja2Templates(directory=temp_list)
     # print("appfile1", id(shv.templates))
-    # templates = shv.templates
+    templates = shv.templates
     # print("appfile2", id(templates))
     # print (main_dict)
     # print('initdict')
