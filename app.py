@@ -69,9 +69,9 @@ class BaseConfig:
             # pyinstaller环境路径处理
             exe_path = os.path.dirname(os.path.realpath(sys.executable))
             if sys.platform.startswith("win"):
-                exe_name = '.\c'
+                exe_name = '.\ntsub'
             else:
-                exe_name = './c'
+                exe_name = './ntsub'
         else:
             exe_path = os.path.dirname(os.path.abspath(__file__))
             exe_name = 'python'
