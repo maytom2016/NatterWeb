@@ -36,7 +36,14 @@ jobs:
             --include-package=email \
             --follow-imports
             --output-dir=dist
-                  
+
+          python -m nuitka \
+              ntsub.py
+             --standalone \
+             --onefile \
+             --output-dir=dist \
+             --follow-imports \
+             
       - name: Verify Package
         run: |
           ls -l dist/app.dist/plugin/notification/  # 检查输出目录结构
