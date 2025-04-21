@@ -24,19 +24,18 @@ jobs:
           
       - name: Build with Nuitka
         run: |    
-          python -m nuitka \
-                  --standalone \
-                  --onefile \
-                  --include-data-file=./plugin/notification/pg.py=plugin/notification/pg.py \
-                  --include-data-dir=./static/=static/ \
-                  --include-data-dir=./templates/=templates/ \
-                  --include-data-dir=./plugin/=plugin/ \
-                  --include-data-dir=./plugin/notification/templates/=plugin/notification/templates/ \
-                  --include-data-dir=./plugin/notification/static/=plugin/notification/static/ \
-                  --include-package=email
-                  --follow-imports \
-                  --output-dir=dist \
-                  app.py
+          python -m nuitka app.py \
+            --standalone \
+            --onefile \
+            --include-data-file=./plugin/notification/pg.py=plugin/notification/pg.py \
+            --include-data-dir=./static/=static/ \
+            --include-data-dir=./templates/=templates/ \
+            --include-data-dir=./plugin/=plugin/ \
+            --include-data-dir=./plugin/notification/templates/=plugin/notification/templates/ \
+            --include-data-dir=./plugin/notification/static/=plugin/notification/static/ \
+            --include-package=email \
+            --follow-imports
+            --output-dir=dist
                   
       - name: Verify Package
         run: |
