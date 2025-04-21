@@ -1,7 +1,7 @@
 import sys
 sys.path.append('./venv/Thirdparty')
-import venv.Thirdparty.natter as natter
 module = __import__("natter-check")
+natter = __import__("natter")
 check=False
 nt=False
 for arg in sys.argv[1:]:
