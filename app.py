@@ -68,13 +68,18 @@ class BaseConfig:
         if getattr(sys, 'frozen', False):
             # pyinstaller环境路径处理
             exe_path = os.path.dirname(os.path.realpath(sys.executable))
-            exe_name = './c'
+            if sys.platform.startswith("win"):
+                exe_name = '.\c'
+            else:
+                exe_name = './c'
         else:
             exe_path = os.path.dirname(os.path.abspath(__file__))
             exe_name = 'python'
         return exe_name,exe_path
 
     exe_name, exe_path = get_exe()
+
+    # exe=os.path.normpath(os.path.join(exe_path,exe_name))
     file_path = os.path.normpath(os.path.join(exe_path, ntpy_path))
     file_path2 = os.path.normpath(os.path.join(exe_path, checknatpy_path))
 
