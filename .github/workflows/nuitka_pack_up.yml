@@ -34,15 +34,15 @@ jobs:
             --include-data-dir=./plugin/notification/templates/=plugin/notification/templates/ \
             --include-data-dir=./plugin/notification/static/=plugin/notification/static/ \
             --include-package=email \
-            --follow-imports
+            --follow-imports \
             --output-dir=dist
 
           python -m nuitka \
-              ntsub.py
+              ntsub.py \
              --standalone \
              --onefile \
              --output-dir=dist \
-             --follow-imports \
+             --follow-imports 
              
       - name: Verify Package
         run: |
