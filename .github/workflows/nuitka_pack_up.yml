@@ -21,16 +21,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install nuitka
           pip install -r requirements.txt  # 如果有requirements.txt
-      - name: Precompile pg.py
-        run: |
-          python3 -c "import py_compile; py_compile.compile('./plugin/notification/pg.py', './plugin/notification/pg.pyc')"
-          ls -l ./plugin/notification/pg.py*  # 验证是否生成pyc
+          
       - name: Build with Nuitka
         run: |
           python -m nuitka \
                   --standalone \
                   --onefile \
-                  --include-data-file=./plugin/notification/pg.pyc=plugin/notification/pg.pyc \
+                  --include-data-file=./plugin/notification/pg.py=plugin/notification/pg.py \
                   --include-data-dir=./static/=static/ \
                   --include-data-dir=./templates/=templates/ \
                   --include-data-dir=./plugin/=plugin/ \
