@@ -55,8 +55,28 @@ class BaseConfig:
         "protocol":r"tcp|udp"
     }
     # 检测nat type的脚本路径
-    checknatpy = './venv/Thirdparty/natter-check.py'
-    __version__ = "1.0.0_bate4"
+    checknatpy =['venv', 'Thirdparty', 'natter-check.py']
+    ntpy=['venv','Thirdparty','natter.py']
+    checknatpy_path=functools.reduce(lambda x, y: os.path.join(x, y), checknatpy)
+    ntpy_path = functools.reduce(lambda x, y: os.path.join(x, y), ntpy)
+
+    __version__ = '1.0.0_bate4'
+
+    @staticmethod
+    #exe_path无论怎么获取都在程序运行目录，无论是打包前还是打包之后
+    def get_exe():
+        if getattr(sys, 'frozen', False):
+            # pyinstaller环境路径处理
+            exe_path = os.path.dirname(os.path.realpath(sys.executable))
+            exe_name = './c'
+        else:
+            exe_path = os.path.dirname(os.path.abspath(__file__))
+            exe_name = 'python'
+        return exe_name,exe_path
+
+    exe_name, exe_path = get_exe()
+    file_path = os.path.normpath(os.path.join(exe_path, ntpy_path))
+    file_path2 = os.path.normpath(os.path.join(exe_path, checknatpy_path))
 
 # 处理打包后的资源路径
 def get_resource_path(relative_path):
@@ -268,7 +288,7 @@ async def run_command(command, output_file):
 async def checknat(task_id =None):
     if getstatus("tcpnat") !='-1' and getstatus("udpnat")!='-1':
         return
-    command = ['python', BaseConfig.checknatpy]
+    command = [BaseConfig.exe_name, BaseConfig.checknatpy_path]
     output_file = 'nattype.txt'
     await run_command(command, output_file)
     lines = []
@@ -293,26 +313,15 @@ async def checknat(task_id =None):
                 main_dict['netstatus']["udpnat"] = number
                 print("UDP NAT:" + number)
 
+
 @processmanager()
 async def launch_natter_task(cmdlist, rule_id, task_id=None):
     # signal.signal(signal.SIGINT, signal.SIG_IGN)  # 忽略 SIGINT 以确保不被默认处理
     # signal.signal(signal.SIGINT, signal_handler)
     # script_directory = os.path.dirname(os.path.abspath(__file__))
     # file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
-    #pyinstaller环境路径处理
-    if getattr(sys, 'frozen', False):
-        exe_path = os.path.dirname(os.path.realpath(sys.executable))
-    else:
-        exe_path = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.normpath(os.path.join(
-        exe_path,
-        "venv",
-        "Thirdparty",
-        "natter.py"
-    ))
-    print(str(file_path))
-    print("sysexec"+sys.executable)
-    command = ['python', file_path] + cmdlist
+
+    command = [BaseConfig.exe_name, BaseConfig.file_path] + cmdlist
     process = await asyncio.create_subprocess_exec(*command,
                                                    stdout=subprocess.PIPE,
                                                    stderr=subprocess.PIPE)
@@ -403,9 +412,9 @@ async def save_to_json_async(data, filename):
 
 def get_natter_version():
     if main_dict['netstatus']["ver"]!= '':return
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
-    result = subprocess.run(['python', file_path, '--version'], capture_output=True)
+    # script_directory = os.path.dirname(os.path.abspath(__file__))
+    # file_path = os.path.join(script_directory, "./venv/Thirdparty", 'natter.py')
+    result = subprocess.run([BaseConfig.exe_name, BaseConfig.file_path, '--version'], capture_output=True)
     # print("Standard Output:", result.stdout.decode())
     # print("Standard Error:", result.stderr.decode())
     if result.stdout.decode():
@@ -881,6 +890,8 @@ def get_task_status():
 
 
 def main():
+    env_path={"程序名":BaseConfig.exe_name,"程序路径":BaseConfig.exe_path,"natter脚本路径":BaseConfig.file_path,"check脚本路径":BaseConfig.file_path2}
+    print(env_path)
     parser = argparse.ArgumentParser(
         description='A WEB GUI for Natter(Expose your port behind full-cone NAT to the Internet.)')
     parser.add_argument("--version", "-V", action="version", version="Natter Web %s" % BaseConfig.__version__,
