@@ -34,7 +34,8 @@ jobs:
             --hidden-import=plugin.notification.pg `
             --console `
             app.py
-
+          pyinstaller -F ntsub.py
+          
       - name: Verify Windows build
         run: |
           dir dist\
