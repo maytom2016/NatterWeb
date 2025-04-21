@@ -39,11 +39,11 @@ jobs:
           
       - name: Verify Windows build
         run: |
-          dir dist\
+          dir dist\app
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-windows
-          path: dist
+          path: dist\app
           retention-days: 7
