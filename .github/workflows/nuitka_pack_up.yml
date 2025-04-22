@@ -45,7 +45,7 @@ jobs:
       #     fi
 
       - name: Build with Nuitka (app.py)
-        if: steps.check-ntsub.outputs.continue_build == 'true'
+        # if: steps.check-ntsub.outputs.continue_build == 'true'
         run: |
           python -m nuitka app.py \
             --standalone \
