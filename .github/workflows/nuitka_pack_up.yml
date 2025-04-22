@@ -1,26 +1,22 @@
-name: "Python Nuitka 可执行文件构建"
+name: Build Python Nuitka Executable
 
 on:
   workflow_dispatch:  # 手动触发
 
 jobs:
-  构建:
+  build:
     runs-on: ubuntu-22.04
-    name: "构建主流程"
 
     steps:
-      # 第一步：拉取代码
-      - name: "检出代码"
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      # 第二步：设置Python环境
-      - name: "配置Python环境"
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'  # 根据你的项目需要调整版本
 
-      # 第三步：安装依赖
-      - name: "安装构建依赖"
+      - name: Install Nuitka and dependencies
         run: |
           python -m pip install --upgrade pip
           pip install nuitka
@@ -28,8 +24,7 @@ jobs:
             pip install -r requirements.txt
           fi
 
-      # 第四步：构建ntsub
-      - name: "构建ntsub可执行文件"
+      - name: Build ntsub.py with Nuitka
         run: |
           python -m nuitka \
               ntsub.py \
@@ -38,21 +33,19 @@ jobs:
               --output-dir=dist \
               --follow-imports
 
-      # 第五步：关键检查点
-      - name: "验证ntsub构建结果"
-        id: 验证构建
+      - name: Check if ntsub.bin exists (决定是否继续构建 app.py)
+        id: check-ntsub
         run: |
           if [ -f "dist/ntsub.bin" ]; then
-            echo "::notice::ntsub.bin 构建成功，继续后续流程"
-            echo "continue=true" >> $GITHUB_OUTPUT
+            echo "ntsub.bin exists. Will proceed with app.py build."
+            echo "::set-output name=continue_build::true"
           else
-            echo "::error::ntsub.bin 构建失败！工作流终止"
-            exit 1
+            echo "::error::ntsub.bin not found. Stopping workflow."
+            exit 1  # 终止工作流
           fi
 
-      # 第六步：构建app（条件执行）
-      - name: "构建app可执行文件"
-        if: steps.验证构建.outputs.continue == 'true'
+      - name: Build with Nuitka (app.py)
+        if: steps.check-ntsub.outputs.continue_build == 'true'
         run: |
           python -m nuitka app.py \
             --standalone \
@@ -68,26 +61,23 @@ jobs:
             --follow-imports \
             --output-dir=dist
 
-      # 第七步：验证输出结构
-      - name: "检查输出目录结构"
-        if: steps.验证构建.outputs.continue == 'true'
+      - name: Verify Package
+        if: steps.check-ntsub.outputs.continue_build == 'true'
         run: |
           ls -l dist/app.dist/plugin/notification/
 
-      # 第八步：打包成果物
-      - name: "整理输出文件"
-        if: steps.验证构建.outputs.continue == 'true'
+      - name: Compress the output
+        if: steps.check-ntsub.outputs.continue_build == 'true'
         run: |
           cd dist
-          mkdir -p 构建成果
-          mv ntsub.bin ./构建成果/
-          mv app.bin ./构建成果/
+          mkdir -p artifact
+          mv ntsub.bin ./artifact/
+          mv app.bin ./artifact/
 
-      # 第九步：上传成果物
-      - name: "上传构建成果"
-        if: steps.验证构建.outputs.continue == 'true'
+      - name: Upload Artifact
+        if: steps.check-ntsub.outputs.continue_build == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: "可执行程序包"
-          path: "dist/构建成果"
+          name: standalone-app
+          path: dist/artifact
           retention-days: 7
