@@ -68,27 +68,26 @@ class BaseConfig:
     __version__ = '1.0.0_bate4'
 
     @staticmethod
-    def is_nuitka():
-        # 检查标志、模块、文件路径
-        return (
-                "__compiled__" in globals()
-                or getattr(sys, "frozen", False)
-                or any("nuitka" in name.lower() for name in sys.modules)
-        )
-    @classmethod
     #exe_path无论怎么获取都在程序运行目录，无论是打包前还是打包之后
-    def get_exe(cls):
+    def get_exe():
         def get_exe_name_by_platform():
             if sys.platform.startswith("win"):
                 exe_name = '.\\ntsub'
             else:
                 exe_name = './ntsub'
             return exe_name
+        def is_nuitka():
+            # 检查标志、模块、文件路径
+            return (
+                    "__compiled__" in globals()
+                    or getattr(sys, "frozen", False)
+                    or any("nuitka" in name.lower() for name in sys.modules)
+            )
         if getattr(sys, 'frozen', False):
             # pyinstaller环境路径处理
             exe_path = os.getcwd()
             exe_name=get_exe_name_by_platform()
-        elif cls.is_nuitka:
+        elif is_nuitka:
             #nuitka环境路径，还是单独开一个分支省得干扰原先配置
             exe_path = os.getcwd()
             exe_name = 'python'
