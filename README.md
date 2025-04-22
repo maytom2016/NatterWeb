@@ -18,9 +18,18 @@ git clone  https://github.com/maytom2016/NatterWeb.git
 ~~~
 pip install -r requirements.txt
 ~~~
-## 启动
+## python启动
 ~~~
 python3 app.py
+~~~
+## 可执行文件启动（不推荐）
+windows
+~~~
+.\app
+~~~
+linux
+~~~
+./app
 ~~~
 ## Dockerfile启动
 

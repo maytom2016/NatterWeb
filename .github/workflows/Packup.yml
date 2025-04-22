@@ -33,8 +33,6 @@ jobs:
             app.py
             
             pyinstaller -F ntsub.py
-
-            mv dist/ntsub dist/app/ntsub
             
       - name: Verify build
         run: |
@@ -44,6 +42,6 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-binary
+          name: app-linux
           path: dist
           retention-days: 7
