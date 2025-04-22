@@ -24,25 +24,25 @@ jobs:
             pip install -r requirements.txt
           fi
 
-      - name: Build ntsub.py with Nuitka
-        run: |
-          python -m nuitka \
-              ntsub.py \
-              --standalone \
-              --onefile \
-              --output-dir=dist \
-              --follow-imports
+      # - name: Build ntsub.py with Nuitka
+      #   run: |
+      #     python -m nuitka \
+      #         ntsub.py \
+      #         --standalone \
+      #         --onefile \
+      #         --output-dir=dist \
+      #         --follow-imports
 
-      - name: Check if ntsub.bin exists (决定是否继续构建 app.py)
-        id: check-ntsub
-        run: |
-          if [ -f "dist/ntsub.bin" ]; then
-            echo "ntsub.bin exists. Will proceed with app.py build."
-            echo "continue_build=true" >> $GITHUB_OUTPUT
-          else
-            echo "::error::ntsub.bin not found. Stopping workflow."
-            exit 1  # 终止工作流
-          fi
+      # - name: Check if ntsub.bin exists (决定是否继续构建 app.py)
+      #   id: check-ntsub
+      #   run: |
+      #     if [ -f "dist/ntsub.bin" ]; then
+      #       echo "ntsub.bin exists. Will proceed with app.py build."
+      #       echo "continue_build=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "::error::ntsub.bin not found. Stopping workflow."
+      #       exit 1  # 终止工作流
+      #     fi
 
       - name: Build with Nuitka (app.py)
         if: steps.check-ntsub.outputs.continue_build == 'true'
@@ -76,13 +76,13 @@ jobs:
         run: |
           cd dist
           mkdir -p artifact
-          mv ntsub.bin ./artifact/
+          # mv ntsub.bin ./artifact/
           mv app.bin ./artifact/
 
       - name: Upload Artifact
         if: steps.check-ntsub.outputs.continue_build == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: standalone-app
+          name: linux-nuitka-build
           path: dist/artifact
           retention-days: 7
