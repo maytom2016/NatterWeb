@@ -23,6 +23,16 @@ jobs:
           if [ -f "requirements.txt" ]; then
             pip install -r requirements.txt
           fi
+          
+      - name: Build ntsub.py with Nuitka
+        if: steps.check-ntsub.outcome == 'success'  
+        run: |
+          python -m nuitka \
+              ntsub.py \
+              --standalone \
+              --onefile \
+              --output-dir=dist \
+              --follow-imports
 
       - name: Check if ntsub.bin exists (Fail if missing)
         id: check-ntsub
@@ -32,26 +42,6 @@ jobs:
             exit 1  # 终止工作流
           else
             echo "ntsub.bin exists. Continuing..."
-          fi
-
-      - name: Build ntsub.py with Nuitka
-        if: steps.check-ntsub.outcome == 'success'  # 仅在前一步成功时运行
-        run: |
-          python -m nuitka \
-              ntsub.py \
-              --standalone \
-              --onefile \
-              --output-dir=dist \
-              --follow-imports
-
-      - name: Check ntsub.bin again (Verify build)
-        if: steps.check-ntsub.outcome == 'success'
-        run: |
-          if [ -f "dist/ntsub.bin" ]; then
-            echo "ntsub.bin has been built successfully."
-          else
-            echo "::error::ntsub.bin was not built."
-            exit 1
           fi
 
       - name: Build with Nuitka (app.py)
