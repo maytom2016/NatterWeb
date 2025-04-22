@@ -27,6 +27,8 @@ jobs:
           python -m nuitka app.py \
             --standalone \
             --onefile \
+            --enable-plugin=anti-bloat \
+            --recurse-to=plugin.notification.pg \
             --include-data-file=./plugin/notification/pg.py=plugin/notification/pg.py \
             --include-data-dir=./static/=static/ \
             --include-data-dir=./templates/=templates/ \
