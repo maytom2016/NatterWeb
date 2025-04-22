@@ -1,8 +1,14 @@
 # 在文件顶部添加（实际不会运行，仅供Nuitka分析）
-import sys
-
 if False:
+    from HTMLTable import HTMLTable
+    from attr import dataclass
+    from fastapi import Form
+    from pydantic import BaseModel, EmailStr, model_serializer
+    from enum import Enum, unique
+    from tabulate import tabulate
     from plugin.notification import pg
+
+import sys
 import ast
 import importlib
 import ipaddress
@@ -10,7 +16,6 @@ import shutil
 import time
 import uuid
 import zipfile
-
 import uvicorn
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, BackgroundTasks, Header, Path
