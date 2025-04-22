@@ -16,7 +16,7 @@ from attr import dataclass
 from fastapi import FastAPI, Request, Form, Header
 from starlette.responses import HTMLResponse
 from starlette.staticfiles import StaticFiles
-from pydantic import BaseModel, EmailStr, model_serializer
+from pydantic import BaseModel, EmailStr
 from enum import Enum, unique
 
 from tabulate import tabulate
