@@ -655,8 +655,9 @@ def bind_all_router():
         del_id_list=[]
         for id,v in task_status.items():
             process = v.get('process')
-            process.terminate()
-            await process.wait()
+            if process is not None:
+                process.terminate()
+                await process.wait()
             log_task_cancel(id)
             # print("after_process_terminate", othertasks)
             del_id_list.append(id)
