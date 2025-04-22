@@ -58,6 +58,11 @@ jobs:
             --include-data-dir=./plugin/notification/templates/=plugin/notification/templates/ \
             --include-data-dir=./plugin/notification/static/=plugin/notification/static/ \
             --include-package=email \
+            --include-package=HTMLTable \
+            --include-package=attr \
+            --include-package=enum \
+            --include-package=tabulate \
+            --follow-import-to=plugin.notification.pg \
             --follow-imports \
             --output-dir=dist
 
