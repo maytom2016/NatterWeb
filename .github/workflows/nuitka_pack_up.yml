@@ -38,7 +38,7 @@ jobs:
         run: |
           if [ -f "dist/ntsub.bin" ]; then
             echo "ntsub.bin exists. Will proceed with app.py build."
-            echo "::set-output name=continue_build::true"
+            echo "continue_build=true" >> $GITHUB_OUTPUT
           else
             echo "::error::ntsub.bin not found. Stopping workflow."
             exit 1  # 终止工作流
