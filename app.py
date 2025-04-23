@@ -1,8 +1,6 @@
 # 在文件顶部添加（实际不会运行，仅供Nuitka分析）
 from datetime import datetime, timezone
 
-from tomlkit.items import String
-
 if False:
     from HTMLTable import HTMLTable
     from attr import dataclass
