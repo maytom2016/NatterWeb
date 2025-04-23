@@ -210,4 +210,72 @@ input[type=text], select {
   padding-left: 2rem;
 }
 
+/*展开详情按钮 */
+.expand-btn {
+  cursor: pointer;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 2px 5px;
+}
+.expand-btn.expanded {
+  background: #eee;
+  content: "-";
+}
 
+/* 详情行 - 默认完全隐藏 */
+.detail-row {
+  display: none; /* 默认完全隐藏 */
+  overflow: hidden;
+}
+
+/* 详情内容容器 */
+.detail-content {
+  padding: 0 16px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 展开状态 */
+.detail-row.expanded {
+  display: table-row; /* 必须保持表格行显示 */
+}
+
+.detail-row.expanded .detail-content {
+  opacity: 1;
+  transform: translateY(0);
+  padding: 16px;
+}
+
+.task_log {
+  /* 背景颜色为白色，给人一种干净的感觉 */
+  background-color: white;
+  /* 文本颜色为黑色，确保良好的对比度 */
+  color: black;
+  /* 使用等宽字体，便于查看日志中的格式，如代码缩进等 */
+  font-family: 'Courier New', Courier, monospace;
+  /* 给文本框添加边框，增强视觉效果 */
+  border: 1px solid #ccc;
+  /* 当文本框内容超出时显示滚动条 */
+  overflow: auto;
+  /* 内边距，使文本不会紧贴边框 */
+  padding: 5px;
+  /* 去掉文本框的默认轮廓，使其外观更简洁 */
+  outline: none;
+  resize:none;
+  height: 10rem;
+}
+
+.status-container {
+  display: flex;          /* 启用弹性布局 */
+  justify-content: space-between; /* 均匀分布 */
+  width: 100%;           /* 确保容器有宽度 */
+  /* gap: 10px; */
+}
+
+.status-container span {
+  margin-bottom: 0.5rem;
+  flex: 1;               /* 每个元素平分剩余空间 */
+   
+}

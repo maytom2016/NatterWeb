@@ -1,4 +1,8 @@
 # 在文件顶部添加（实际不会运行，仅供Nuitka分析）
+from datetime import datetime, timezone
+
+from tomlkit.items import String
+
 if False:
     from HTMLTable import HTMLTable
     from attr import dataclass
@@ -134,7 +138,7 @@ def init_vars():
     task_status = shv.task_status
     netstatus = {"ver": '', 'tcpnat': '-1', 'udpnat': '-1', 'locahostip': '', 'internetip': ''}
     shv.main_dict = {'nav_items': BaseConfig.nav_items, 'netstatus': netstatus, 'rules': rules,
-                 'task_status': task_status,"version":BaseConfig.__version__}  # 初始化主字典
+                 'task_status': task_status,'task_log':logs_dict,"version":BaseConfig.__version__}  # 初始化主字典
     main_dict = shv.main_dict
 
 
@@ -266,6 +270,12 @@ def process_natter_task(input_str,task_id=None):
                 task_status[task_id][key] = match.group(0)
     return task_status
 
+def check_process_alive(task_id=None):
+    if task_status[task_id]['process'] is None:
+        task_status[task_id]['process_status'] ='已停止'
+        return False
+    return True
+
 def init_dic_key(dic,task_id,value):
     if task_id not in dic or not bool(dic[task_id]):
         dic[task_id] = value
@@ -356,12 +366,16 @@ async def launch_natter_task(cmdlist, rule_id, task_id=None):
     async with lock:
         # 初始化对应键值
         init_dic_key(logs_dict, task_id, "")
+        task_status[task_id]['command']=command
         task_status[task_id]['process'] = process
+        task_status[task_id]['process_pid']=process.pid
+        task_status[task_id]['process_status'] = '正在运行'
         task_status[task_id]['rule_id'] = rule_id
         # task_status[task_id]['rulename']=main_dict['rules'][rule_id]['rulename']
         task_status[task_id]['rulename'] = rules[rule_id]['rulename']
         # 设置success默认值
         task_status[task_id]['success'] = '未连接'
+        task_status[task_id]['create_time']=datetime.now(timezone.utc).isoformat()
     while True:
         task_stdout = asyncio.create_task(stdout_queue.get())
         task_stderr = asyncio.create_task(stderr_queue.get())
@@ -376,6 +390,7 @@ async def launch_natter_task(cmdlist, rule_id, task_id=None):
             # print ('edcode',encoding)
             linestr=line.decode('ascii','ignore')
             process_natter_task(linestr, task_id=task_id)
+            check_process_alive(task_id=task_id)
             logs_dict[task_id] += linestr
             v=task_status[task_id]
             sourceip=v.get('sourceip')
@@ -785,6 +800,9 @@ def bind_all_router():
         print("task_status in appfile:"+str(id(task_status)))
         return {"message:taskchanged"}
 
+    @app.get("/test_getmain_dict")
+    async def test_point2():
+        return {"message:"+str(main_dict)}
 
 
 

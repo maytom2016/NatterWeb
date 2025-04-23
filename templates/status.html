@@ -14,6 +14,7 @@
                 <th>出口</th>
                 <th>映射关系</th>
                 <th>状态</th>
+                <th><!-- 展开按钮列 --></th>
             </tr>
         </thead>
             <div class="manage-head">
@@ -37,6 +38,32 @@
                 </td>
                 <td>{{ task.natmap }}</td>
                 <td class="task_success">{{ task.success }}</td>
+                <td>
+                    <button class="expand-btn" data-target="{{ task_id }}-detail">+</button>
+                </td>
+            </tr>
+                <!-- 详情行 -->
+            <tr class="detail-row" id="{{ task_id }}-detail">
+                <td colspan="6">
+                    <div class="detail-content">
+                        <!-- <p>进程ID: {{ task.process_pid }}</p> 此项显示不准确-->
+                        <div class="status-container">
+                            <span>进程状态: {{ task.process_status }}</span>
+                            <span>穿透状态: {{ task.success }}</span>
+                            <span id="{{ task_id }}_runtime" data-time="{{ task.create_time }}">已运行时间:00:00:00</span>
+                        </div>
+                        <div class="status-container">
+                            <span>运行参数: {{ task.command }}</span><br>
+                        </div>
+                        <div class="status-container">
+                            <span>运行日志:</span>
+                        </div>
+                        <div class="natter_log_div">
+                            <textarea readonly id="{{ task_id }}_log" name="{{ task_id }}_log"  style="width: 100%;" class="task_log" aria-label="任务运行日志">{{ main_dict.task_log[task_id] }}</textarea>
+                        </div>
+                        <!-- 可以添加更多字段 -->
+                    </div>
+                </td>
             </tr>
             {% endif %}
             {% endfor %}
