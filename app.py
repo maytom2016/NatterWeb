@@ -69,7 +69,7 @@ class BaseConfig:
     checknatpy_path=functools.reduce(lambda x, y: os.path.join(x, y), checknatpy)
     ntpy_path = functools.reduce(lambda x, y: os.path.join(x, y), ntpy)
 
-    __version__ = '1.0.0_bate4'
+    __version__ = '1.0.1_bate1'
 
     @staticmethod
     #exe_path无论怎么获取都在程序运行目录，无论是打包前还是打包之后
