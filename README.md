@@ -4,6 +4,8 @@
 [![LICENSE](https://img.shields.io/github/license/maytom2016/NatterWeb.svg?style=flat-square&label=LICENSE)](https://github.com/maytom2016/NatterWeb/blob/master/LICENSE)
 ![GitHub Stars](https://img.shields.io/github/stars/maytom2016/NatterWeb.svg?style=flat-square&label=Stars&logo=github)
 ![GitHub Forks](https://img.shields.io/github/forks/maytom2016/NatterWeb.svg?style=flat-square&label=Forks&logo=github)
+[![Downloads](https://img.shields.io/github/downloads/maytom2016/NatterWeb/total?logo=github&style=flat-square)](https://github.com/maytom2016/NatterWeb/releases/latest)
+[![Last Release](https://img.shields.io/github/v/release/maytom2016/NatterWeb?logo=github&label=latest&style=flat-square)](https://github.com/navidrome/maytom2016/NatterWeb)
 
 ## 介绍
 Natter的套壳WEB UI。本程序是一个名为Natter的Web图形用户界面（GUI），用于将位于全锥形NAT（网络地址转换）后的端口暴露到互联网。
