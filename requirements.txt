@@ -1,4 +1,4 @@
-uvicorn~=0.31.1
+uvicorn~=0.34.2
 aiofiles~=24.1.0
 requests~=2.28.2
 fastapi~=0.115.0
